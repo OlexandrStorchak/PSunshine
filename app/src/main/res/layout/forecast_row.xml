@@ -5,9 +5,9 @@
 
     android:id="@+id/forecast_row"
     android:textSize="18sp"
-
+    android:layout_weight="1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="70dp"
     tools:text="text"
     android:gravity="center"
 

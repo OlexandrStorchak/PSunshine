@@ -33,22 +33,27 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.alex.psunshine.FragmentForecast.adapter;
+import static com.example.alex.psunshine.FragmentForecast.forecastStr;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentForecast extends Fragment {
 
-    List<String> forecastStr;
-    ArrayAdapter<String> adapter;
+    public static List<String> forecastStr = new ArrayList<>();
+    public static ArrayAdapter<String> adapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         Log.d("log", "FragmentForecast OnCreateView");
         return inflater.inflate(R.layout.fragment_forecast, container, false);
+
 
     }
 
@@ -65,18 +70,15 @@ public class FragmentForecast extends Fragment {
 
         ListView listView = (ListView) v.findViewById(R.id.forecast_list_view);
 
-
-        List<String> forecastStr = new ArrayList<>();
-
-
-        adapter = new ArrayAdapter<>(getContext(), R.layout.forecast_row, new ArrayList<String>());
+        adapter = new ArrayAdapter<>(getContext(), R.layout.forecast_row, new ArrayList<String>(forecastStr));
         listView.setAdapter(adapter);
-        setHasOptionsMenu(true);
+
 
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_forecast, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -86,8 +88,8 @@ public class FragmentForecast extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 Log.d("log", "Refresh");
-                FetchForecast task = new FetchForecast();
-                task.execute("94043");
+                FetchForecast getWeather = new FetchForecast();
+                getWeather.execute("94043");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -270,6 +272,14 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
         return null;
     }
 
-
+    @Override
+    protected void onPostExecute(String[] strings) {
+        if (strings != null) {
+            adapter.clear();
+            for (String dayForecastStr : strings) {
+                adapter.add(dayForecastStr);
+            }
+        }
+    }
 }
 
