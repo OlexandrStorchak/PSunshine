@@ -2,9 +2,12 @@ package com.example.alex.psunshine;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
@@ -48,6 +51,7 @@ public class FragmentForecast extends Fragment {
     public static ArrayAdapter<String> adapter;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class FragmentForecast extends Fragment {
         super.onStart();
         Log.d("log", "FragmentForecast onStart");
         showForecast(getView());
+        getRefreshWeather();
 
 
     }
@@ -74,11 +79,13 @@ public class FragmentForecast extends Fragment {
 
         adapter = new ArrayAdapter<>(getContext(), R.layout.forecast_row, new ArrayList<String>(forecastStr));
         listView.setAdapter(adapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("log","Clicked "+i);
-                Toast.makeText(getContext(),adapter.getItem(i), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(),adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(),DetailActivity.class).putExtra("details",adapter.getItem(i)));
             }
         });
 
@@ -92,13 +99,24 @@ public class FragmentForecast extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void getRefreshWeather(){
+        FetchForecast getWeather = new FetchForecast();
+
+        String location;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        location = preferences.getString(getString(R.string.pref_location),getString(R.string.pref_def_location));
+
+        getWeather.execute(location);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 Log.d("log", "Refresh");
-                FetchForecast getWeather = new FetchForecast();
-                getWeather.execute("94043");
+                getRefreshWeather();
+                break;
+            case  R.id.menu_setting:
+                startActivity(new Intent(getContext(),SettingActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -233,6 +251,8 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "APPID";
+
+
 
             Uri link = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, strings[0])
