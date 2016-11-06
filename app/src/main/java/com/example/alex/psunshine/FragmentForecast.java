@@ -15,9 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +74,13 @@ public class FragmentForecast extends Fragment {
 
         adapter = new ArrayAdapter<>(getContext(), R.layout.forecast_row, new ArrayList<String>(forecastStr));
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("log","Clicked "+i);
+                Toast.makeText(getContext(),adapter.getItem(i), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
