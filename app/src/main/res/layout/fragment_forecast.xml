@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.alex.psunshine.FragmentForecast">
+    tools:context="com.example.alex.psunshine.fragments.FragmentForecast">
 
     <ListView
         android:id="@+id/forecast_list_view"

@@ -1,23 +1,10 @@
-package com.example.alex.psunshine;
+package com.example.alex.psunshine.getForecast;
 
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,72 +17,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.alex.psunshine.FragmentForecast.adapter;
-import static com.example.alex.psunshine.FragmentForecast.forecastStr;
+import static com.example.alex.psunshine.fragments.FragmentForecast.adapter;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentForecast extends Fragment {
-
-    public static List<String> forecastStr = new ArrayList<>();
-    public static ArrayAdapter<String> adapter;
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
-        Log.d("log", "FragmentForecast OnCreateView");
-        return inflater.inflate(R.layout.fragment_forecast, container, false);
-
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("log", "FragmentForecast onStart");
-        showForecast(getView());
-
-
-    }
-
-    public void showForecast(View v) {
-
-        ListView listView = (ListView) v.findViewById(R.id.forecast_list_view);
-
-        adapter = new ArrayAdapter<>(getContext(), R.layout.forecast_row, new ArrayList<String>(forecastStr));
-        listView.setAdapter(adapter);
-
-
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.menu_forecast, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                Log.d("log", "Refresh");
-                FetchForecast getWeather = new FetchForecast();
-                getWeather.execute("94043");
-        }
-        return super.onOptionsItemSelected(item);
-    }
-}
-
-class FetchForecast extends AsyncTask<String, Void, String[]> {
+public class FetchForecast extends AsyncTask<String, Void, String[]> {
     String forecastJSon;
 
 
@@ -213,7 +139,7 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
         HttpURLConnection httpConnect = null;
         BufferedReader bufferedReader = null;
         String format = "json";
-        String units = "metric";
+        String units = strings[1];
         int numDays = 7;
 
 
@@ -225,16 +151,18 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "APPID";
 
+
             Uri link = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, strings[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, units)
+                    .appendQueryParameter(UNITS_PARAM, strings[1])
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                     .appendQueryParameter(APPID_PARAM, API_KEY)
                     .build();
 
             URL url;
-            url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + strings[0] + "&mode=json&units=metric&cnt=7&APPID=6f3233a88c7fecd9649644cce6a03e8d");
+            url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + strings[0] + "&mode=json&units=" + strings[1] + "&cnt=7&APPID=6f3233a88c7fecd9649644cce6a03e8d");
+
             httpConnect = (HttpURLConnection) url.openConnection();
             httpConnect.setRequestMethod("GET");
             httpConnect.connect();
