@@ -6,6 +6,21 @@
     <string name="refresh">Refresh</string>
     <string name="setting">Setting</string>
     <string name="detail">Detail</string>
-    <string name="pref_location">Location</string>
+    <string name="pref_location_title">Location</string>
+    <string name="pref_location_key">location</string>
     <string name="pref_def_location">94043</string>
+    <string name="pref_measure_title">Measure</string>
+    <string name="pref_measure_key">measure</string>
+    <string name="pref_def_measure">metric</string>
+    <string name="string_get_geo">Get geo</string>
+
+    <array name="pref_measure_arr_titles">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </array>
+
+    <array name="pref_measure_arr_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </array>
 </resources>

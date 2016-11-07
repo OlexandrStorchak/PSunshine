@@ -51,7 +51,6 @@ public class FragmentForecast extends Fragment {
     public static ArrayAdapter<String> adapter;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,9 +82,9 @@ public class FragmentForecast extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("log","Clicked "+i);
-               // Toast.makeText(getContext(),adapter.getItem(i), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(),DetailActivity.class).putExtra("details",adapter.getItem(i)));
+                Log.d("log", "Clicked " + i);
+                // Toast.makeText(getContext(),adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), DetailActivity.class).putExtra("details", adapter.getItem(i)));
             }
         });
 
@@ -99,15 +98,17 @@ public class FragmentForecast extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void getRefreshWeather(){
+    public void getRefreshWeather() {
         FetchForecast getWeather = new FetchForecast();
 
         String location;
+        String measure;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        location = preferences.getString(getString(R.string.pref_location),getString(R.string.pref_def_location));
-
-        getWeather.execute(location);
+        location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_def_location));
+        measure = preferences.getString(getString(R.string.pref_measure_key), getString(R.string.pref_def_measure));
+        getWeather.execute(location, measure);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -115,11 +116,15 @@ public class FragmentForecast extends Fragment {
                 Log.d("log", "Refresh");
                 getRefreshWeather();
                 break;
-            case  R.id.menu_setting:
-                startActivity(new Intent(getContext(),SettingActivity.class));
+            case R.id.menu_setting:
+                startActivity(new Intent(getContext(), SettingActivity.class));
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 
 class FetchForecast extends AsyncTask<String, Void, String[]> {
@@ -240,7 +245,7 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
         HttpURLConnection httpConnect = null;
         BufferedReader bufferedReader = null;
         String format = "json";
-        String units = "metric";
+        String units = strings[1];
         int numDays = 7;
 
 
@@ -257,13 +262,14 @@ class FetchForecast extends AsyncTask<String, Void, String[]> {
             Uri link = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, strings[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, units)
+                    .appendQueryParameter(UNITS_PARAM, strings[1])
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                     .appendQueryParameter(APPID_PARAM, API_KEY)
                     .build();
 
             URL url;
-            url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + strings[0] + "&mode=json&units=metric&cnt=7&APPID=6f3233a88c7fecd9649644cce6a03e8d");
+            url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + strings[0] + "&mode=json&units="+strings[1]+"&cnt=7&APPID=6f3233a88c7fecd9649644cce6a03e8d");
+
             httpConnect = (HttpURLConnection) url.openConnection();
             httpConnect.setRequestMethod("GET");
             httpConnect.connect();
