@@ -8,5 +8,10 @@
         android:title="@string/setting"
 
         />
+    <item
+        android:id="@+id/menu_geo"
+        android:title="@string/string_get_geo"
+
+        />
 
 </menu>
