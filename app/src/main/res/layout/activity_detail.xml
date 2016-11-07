@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.alex.psunshine.DetailActivity">
+    tools:context="com.example.alex.psunshine.activities.DetailActivity">
     <FrameLayout
         android:id="@+id/detail_activity_frame"
         android:layout_width="match_parent"

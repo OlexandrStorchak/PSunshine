@@ -2,8 +2,6 @@
     <string name="app_name">PSunshine</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="refresh">Refresh</string>
     <string name="setting">Setting</string>
     <string name="detail">Detail</string>
     <string name="pref_location_title">Location</string>
@@ -13,6 +11,7 @@
     <string name="pref_measure_key">measure</string>
     <string name="pref_def_measure">metric</string>
     <string name="string_get_geo">Get geo</string>
+    <string name="refresh">Refresh</string>
 
     <array name="pref_measure_arr_titles">
         <item>Metric</item>

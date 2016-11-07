@@ -1,13 +1,12 @@
-package com.example.alex.psunshine;
+package com.example.alex.psunshine.activities;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
+import com.example.alex.psunshine.R;
+import com.example.alex.psunshine.fragments.FragmentDetail;
 
 public class DetailActivity extends AppCompatActivity {
     public static String detailString;
@@ -16,15 +15,14 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        FragmentDetail fragmentDetail =  new FragmentDetail();
-        getFragmentManager().beginTransaction().add(R.id.detail_activity_frame,fragmentDetail).commit();
+        FragmentDetail fragmentDetail = new FragmentDetail();
+        getFragmentManager().beginTransaction().add(R.id.detail_activity_frame, fragmentDetail).commit();
         Intent intent = getIntent();
         detailString = intent.getStringExtra("details");
-        Log.d("log","Activity Detail onCreate");
+        Log.d("log", "Activity Detail onCreate");
 
 
     }
-
 
 
 }

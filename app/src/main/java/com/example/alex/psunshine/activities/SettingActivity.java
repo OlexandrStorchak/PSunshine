@@ -1,13 +1,13 @@
-package com.example.alex.psunshine;
+package com.example.alex.psunshine.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
+
+import com.example.alex.psunshine.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -23,7 +23,7 @@ public class SettingActivity extends PreferenceActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("log","SettingActivity onCreate");
+        Log.d("log", "SettingActivity onCreate");
 
         // Add 'general' preferences, defined in the XML file
         // TODO: Add preferences from XML
@@ -33,8 +33,8 @@ public class SettingActivity extends PreferenceActivity
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         // TODO: Add preferences
-         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
-         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_measure_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_measure_key)));
     }
 
     /**
