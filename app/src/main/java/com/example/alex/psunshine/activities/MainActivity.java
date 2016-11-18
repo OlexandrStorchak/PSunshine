@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
@@ -17,9 +16,6 @@ import android.view.MenuItem;
 import com.example.alex.psunshine.R;
 import com.example.alex.psunshine.fragments.FragmentForecast;
 import com.example.alex.psunshine.getForecast.FetchForecast;
-
-import static com.example.alex.psunshine.activities.DetailActivity.detailString;
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
     ShareActionProvider actionShare;
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRefreshWeather() {
-        FetchForecast getWeather = new FetchForecast();
+        FetchForecast getWeather = new FetchForecast(this, null);
 
         String location;
         String measure;

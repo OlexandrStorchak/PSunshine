@@ -10,9 +10,12 @@
     <string name="pref_measure_title">Measure</string>
     <string name="pref_measure_key">measure</string>
     <string name="pref_def_measure">metric</string>
+
     <string name="string_get_geo">Get geo</string>
     <string name="refresh">Refresh</string>
-
+ <string name="pref_units_key"/>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
     <array name="pref_measure_arr_titles">
         <item>Metric</item>
         <item>Imperial</item>

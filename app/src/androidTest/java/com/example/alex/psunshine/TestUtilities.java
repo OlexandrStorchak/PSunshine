@@ -134,7 +134,7 @@ public class TestUtilities extends AndroidTestCase {
             mContentChanged = true;
         }
 
-        public void waitForNotificationOrFail() {
+        void waitForNotificationOrFail() {
             // Note: The PollingCheck class is taken from the Android CTS (Compatibility Test Suite).
             // It's useful to look at the Android CTS source for ideas on how to test your Android
             // applications.  The reason that PollingCheck works is that, by default, the JUnit
