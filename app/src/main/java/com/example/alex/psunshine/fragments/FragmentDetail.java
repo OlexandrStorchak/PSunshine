@@ -67,7 +67,7 @@ public class FragmentDetail extends Fragment {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, detailString +" "+ hashTag);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, detailString +"  "+ hashTag);
             shareActionProvider.setShareIntent(shareIntent);
         } else {
             Log.d("log", "null");
