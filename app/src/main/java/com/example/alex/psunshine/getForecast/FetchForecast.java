@@ -62,7 +62,6 @@ public class FetchForecast extends AsyncTask<String, Void, String[]> {
     /**
      * Prepare the weather high/lows for presentation.
      */
-    //TODO problem with imperial mode
     private String formatHighLows(double high, double low) {
         // Data is fetched in Celsius by default.
         // If user prefers to see in Fahrenheit, convert the values here.
@@ -71,11 +70,12 @@ public class FetchForecast extends AsyncTask<String, Void, String[]> {
         // we start storing the values in a database.
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(mContext);
-        String unitType = sharedPrefs.getString(
-                mContext.getString(R.string.pref_units_key),
-                mContext.getString(R.string.pref_units_metric));
+         String unitType = sharedPrefs.getString(
+                 mContext.getString(R.string.pref_measure_key),
+                 mContext.getString(R.string.pref_units_metric));
 
-        if (unitType.equals("Imperial")) {
+        Log.d("unit",unitType);
+        if (unitType.equals(mContext.getString(R.string.pref_units_imperial))) {
             high = (high * 1.8) + 32;
             low = (low * 1.8) + 32;
         } else {
@@ -327,7 +327,7 @@ public class FetchForecast extends AsyncTask<String, Void, String[]> {
         HttpURLConnection httpConnect = null;
         BufferedReader bufferedReader = null;
         String format = "json";
-        String units = strings[1];
+        String units = "metric";
         int numDays = 7;
 
 
@@ -344,7 +344,7 @@ public class FetchForecast extends AsyncTask<String, Void, String[]> {
             Uri link = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, locationQuery)
                     .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, "metric")
+                    .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                     .appendQueryParameter(APPID_PARAM, API_KEY)
                     .build();
