@@ -47,7 +47,7 @@ public class SettingActivity extends PreferenceActivity
         onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+                        .getString(preference.getKey(),""));
     }
 
     @Override
