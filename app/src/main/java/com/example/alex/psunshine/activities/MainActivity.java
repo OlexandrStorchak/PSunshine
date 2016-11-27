@@ -2,12 +2,10 @@ package com.example.alex.psunshine.activities;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,19 +14,37 @@ import android.view.MenuItem;
 import com.example.alex.psunshine.R;
 import com.example.alex.psunshine.fragments.FragmentForecast;
 import com.example.alex.psunshine.getForecast.FetchForecast;
+import com.example.alex.psunshine.utilities.Utility;
 
 public class MainActivity extends AppCompatActivity {
-    ShareActionProvider actionShare;
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+
+    private String mLocation;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mLocation = Utility.getPreferredLocation(this);
         FragmentForecast forecast = new FragmentForecast();
-        getSupportFragmentManager().beginTransaction().add(R.id.main_activity_frame, forecast).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_activity_frame, forecast, FORECASTFRAGMENT_TAG).commit();
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
-        // getRefreshWeather();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String location = Utility.getPreferredLocation(this);
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            FragmentForecast ff = (FragmentForecast) getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if (null != ff) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
     }
 
     @Override
@@ -58,19 +74,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRefreshWeather() {
-        FetchForecast getWeather = new FetchForecast(this, null);
+        FetchForecast getWeather = new FetchForecast(this);
 
-        String location;
-        String measure;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_def_location));
-        measure = preferences.getString(getString(R.string.pref_measure_key), getString(R.string.pref_def_measure));
-        getWeather.execute(location, measure);
+        String location = Utility.getPreferredLocation(this);
+
+        getWeather.execute(location);
+
+
     }
 
     public void getGeoIntent() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_def_location));
+        String location = Utility.getPreferredLocation(this);
         Uri geoLocation = Uri.parse("geo:0,0?").
                 buildUpon().
                 appendQueryParameter("q", location).
